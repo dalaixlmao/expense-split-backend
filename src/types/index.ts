@@ -1,4 +1,5 @@
 import { Request } from "express";
+import { SplitMethod } from "@prisma/client";
 
 declare module "express-serve-static-core" {
   interface Request {
@@ -6,6 +7,9 @@ declare module "express-serve-static-core" {
   }
 }
 
+
+
+// DTO = Data transfer objects
 
 export interface CreateUserDTO {
   email: string;
@@ -17,16 +21,12 @@ export interface User extends CreateUserDTO {
   id: string;
 }
 
-export enum SplitMethod {
-  EQUAL = 'EQUAL',
-  EXACT = 'EXACT',
-  PERCENTAGE = 'PERCENTAGE',
-}
+
 
 export interface CreateExpenseParticipantDTO {
   userId: string;
-  amount?: number;
-  percentage?: number;
+  amount?: number | null;
+  percentage?: number | null;
 }
 
 export interface CreateExpenseDTO {

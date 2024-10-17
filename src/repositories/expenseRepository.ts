@@ -1,11 +1,11 @@
-import { PrismaClient } from '@prisma/client';
-import { CreateExpenseDTO, Expense } from '../types/index';
+import { PrismaClient } from "@prisma/client";
+import { CreateExpenseDTO, Expense } from "../types/index";
 
 export class ExpenseRepository {
   constructor(private prisma: PrismaClient) {}
 
   async create(expenseData: CreateExpenseDTO): Promise<Expense> {
-    return this.prisma.expense.create({
+    const expense = this.prisma.expense.create({
       data: {
         ...expenseData,
         participants: {
@@ -16,15 +16,14 @@ export class ExpenseRepository {
         participants: true,
       },
     });
+    return expense;
   }
+  
 
   async findByUserId(userId: string): Promise<Expense[]> {
     const a = this.prisma.expense.findMany({
       where: {
-        OR: [
-          { creatorId: userId },
-          { participants: { some: { userId } } },
-        ],
+        OR: [{ creatorId: userId }, { participants: { some: { userId } } }],
       },
       include: {
         participants: true,
