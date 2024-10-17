@@ -1,0 +1,19 @@
+import { UserRepository } from '../repositories/userRepository';
+import { CreateUserDTO, User } from '../types/index.js';
+
+export class UserService {
+  constructor(private userRepository: UserRepository) {}
+
+  async createUser(userData: CreateUserDTO): Promise<User> {
+    // Add any business logic or validation here
+    return this.userRepository.create(userData);
+  }
+
+  async getUserById(userId: string): Promise<User> {
+    const user = await this.userRepository.findById(userId);
+    if (!user) {
+      throw new Error('User not found');
+    }
+    return user;
+  }
+}
