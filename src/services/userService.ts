@@ -9,7 +9,6 @@ export class UserService {
   }
 
   async createUser(userData: CreateUserDTO): Promise<User> {
-    // Add any business logic or validation here
     return this.userRepository.create(userData);
   }
 

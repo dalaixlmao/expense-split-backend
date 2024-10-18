@@ -32,7 +32,6 @@ const CreateExpenseDTOSchema = z.object({
   participants: z.array(CreateExpenseParticipantDTOSchema),
 });
 
-// Expense Schema
 const ExpenseSchema = CreateExpenseDTOSchema.omit({
   participants: true,
 }).extend({

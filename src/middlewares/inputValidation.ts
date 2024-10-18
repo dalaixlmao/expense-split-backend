@@ -39,7 +39,6 @@ export const addExpenseValidation = async (
   try {
     const validate = CreateExpenseDTOSchema.safeParse(body);
     if (validate.success) {
-      // Additional validation for percentage split
       if (body.splitMethod === 'PERCENTAGE') {
         const totalPercentage = body.participants.reduce((sum, p) => sum + (p.percentage || 0), 0);
         if (Math.abs(totalPercentage - 100) > 0.01) {
