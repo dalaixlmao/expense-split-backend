@@ -1,1 +1,1 @@
-{"root":["./src/index.ts"],"version":"5.6.3"}
+{"root":["./src/index.ts","./src/server.ts","./src/controllers/expensecontroller.ts","./src/controllers/usercontroller.ts","./src/middlewares/authmiddleware.ts","./src/middlewares/inputvalidation.ts","./src/repositories/expenserepository.ts","./src/repositories/userrepository.ts","./src/routes/expenseroutes.ts","./src/routes/userroutes.ts","./src/services/expenseservice.ts","./src/services/paymentgraphgenerator.ts","./src/services/userservice.ts","./src/types/index.ts","./src/types/zodschemas.ts"],"version":"5.6.3"}
