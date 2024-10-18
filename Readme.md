@@ -39,7 +39,6 @@ This diagram depicts the database schema and relationships between entities.
 
 ![Entity-Relation Diagram](./Diagrams/Entity-Relation-Diagram.jpg)
 
-[... rest of the content ...]
 
 ## Project Structure
 
