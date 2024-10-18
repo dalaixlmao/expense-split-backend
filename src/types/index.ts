@@ -72,8 +72,3 @@ export interface BalanceSheet {
   totalOwedToOthers: number;
   transactions: PaymentNode[];
 }
-
-export interface BalanceSheet {
-  transactions: PaymentNode[];
-  // Add other balance sheet properties as needed
-}
