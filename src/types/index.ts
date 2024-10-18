@@ -57,6 +57,22 @@ export interface PaymentNode {
 }
 
 export interface BalanceSheet {
+  individualExpenses: {
+    id: string;
+    description: string;
+    amount: number;
+    date: Date;
+    participants: {
+      userId: string;
+      amount: number;
+    }[];
+  }[];
+  totalOwed: number;
+  totalOwedToOthers: number;
+  transactions: PaymentNode[];
+}
+
+export interface BalanceSheet {
   transactions: PaymentNode[];
   // Add other balance sheet properties as needed
 }

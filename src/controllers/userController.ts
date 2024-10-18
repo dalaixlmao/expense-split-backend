@@ -17,7 +17,7 @@ export class UserController {
           .status(400)
           .json({ message: "Failed to sign up as user already exist" });
       }
-      const hashedPassword = await hash(password, "10");
+      const hashedPassword = await hash(password, 10);
       const newUser = await this.userService.createUser({email, mobileNumber, password:hashedPassword, name});
       const token = sign({userId: newUser.id}, process.env.JWT || "");
       const bearerToken = "Bearer "+token;
@@ -39,7 +39,7 @@ export class UserController {
           .status(400)
           .json({ message: "Failed to sign in, user does not exist" });
       }
-      const hashedPassword = await hash(password, "10");
+      const hashedPassword = await hash(password, 10);
       if(user?.password != hashedPassword)
       {
         res.status(401).json({message: "Wrong password"});

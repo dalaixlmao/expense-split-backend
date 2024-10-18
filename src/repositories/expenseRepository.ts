@@ -20,7 +20,6 @@ export class ExpenseRepository {
     return expense;
   }
   
-
   async findByUserId(userId: string): Promise<Expense[]> {
     const a = this.prisma.expense.findMany({
       where: {
