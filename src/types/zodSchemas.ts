@@ -1,6 +1,12 @@
 import { z } from "zod";
 import { SplitMethod } from "@prisma/client";
 
+const UserSigninSchema =z.object({
+    email: z.string().email(),
+    password: z.string().min(8)
+  });
+
+
 const CreateUserDTOSchema = z.object({
   email: z.string().email(),
   name: z.string(),
@@ -59,6 +65,7 @@ const BalanceSheetSchema = z.object({
 });
 
 export {
+    UserSigninSchema,
   CreateUserDTOSchema,
   UserSchema,
   CreateExpenseParticipantDTOSchema,

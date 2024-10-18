@@ -9,6 +9,11 @@ declare module "express-serve-static-core" {
 
 // DTO = Data transfer objects
 
+export interface UserSignin {
+  email: string;
+  password: string;
+}
+
 export interface CreateUserDTO {
   email: string;
   name: string;

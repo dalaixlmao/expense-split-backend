@@ -1,6 +1,52 @@
 import { Request, Response, NextFunction } from "express";
-import { CreateExpenseDTO } from "../types";
-import { CreateExpenseDTOSchema } from "../types/zodSchemas";
+import { CreateExpenseDTO, CreateUserDTO, UserSignin } from "../types/index";
+import { CreateExpenseDTOSchema,CreateUserDTOSchema, UserSigninSchema } from "../types/zodSchemas";
+
+export const userSignupValidation = async (req: Request, res: Response, next: NextFunction) => {
+  const body: CreateUserDTO = req.body;
+  try {
+    const validate = CreateUserDTOSchema.safeParse(body);
+    if (validate.success) {
+      next();
+    } else {
+      res.status(400).json({ message: "Bad input" });
+    }
+  } catch (error) {
+    res.status(400).json({ message: "Bad input", error });
+  }
+};
+
+export const userSigninValidation = async (req: Request, res: Response, next: NextFunction) => {
+  const body: UserSignin= req.body;
+  try {
+    const validate = UserSigninSchema.safeParse(body);
+    if (validate.success) {
+      next();
+    } else {
+      res.status(400).json({ message: "Bad input" });
+    }
+  } catch (error) {
+    res.status(400).json({ message: "Bad input", error });
+  }
+};
+
+
+
+export const userSigninVlidation = async (req: Request, res: Response, next: NextFunction) => {
+  const body: Omit<CreateUserDTO, ""> = req.body;
+  try {
+    const validate = CreateUserDTOSchema.safeParse(body);
+    if (validate.success) {
+      next();
+    } else {
+      res.status(400).json({ message: "Bad input" });
+    }
+  } catch (error) {
+    res.status(400).json({ message: "Bad input", error });
+  }
+};
+
+
 
 export const addExpenseVlidation = async (
   req: Request,
