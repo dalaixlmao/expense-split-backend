@@ -5,6 +5,16 @@ import { CreateUserDTO } from '../types/index';
 export class UserController {
   constructor(private userService: UserService) {}
 
+  async signUp(req: Request, res: Response){
+    try{
+      const {email, mobileNumber, password, name} = req.body;
+      
+
+    } catch(error){
+
+    }
+  }
+
   async createUser(req: Request, res: Response) {
     try {
       const userData: CreateUserDTO = req.body;

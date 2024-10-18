@@ -7,21 +7,18 @@ declare module "express-serve-static-core" {
   }
 }
 
-
-
 // DTO = Data transfer objects
 
 export interface CreateUserDTO {
   email: string;
   name: string;
   mobileNumber: string;
+  password: string;
 }
 
 export interface User extends CreateUserDTO {
   id: string;
 }
-
-
 
 export interface CreateExpenseParticipantDTO {
   userId: string;
@@ -37,7 +34,7 @@ export interface CreateExpenseDTO {
   participants: CreateExpenseParticipantDTO[];
 }
 
-export interface Expense extends Omit<CreateExpenseDTO, 'participants'> {
+export interface Expense extends Omit<CreateExpenseDTO, "participants"> {
   id: string;
   date: Date;
   participants: ExpenseParticipant[];

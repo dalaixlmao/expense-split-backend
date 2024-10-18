@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { CreateExpenseDTO, Expense } from "../types/index";
 
+
 export class ExpenseRepository {
   constructor(private prisma: PrismaClient) {}
 

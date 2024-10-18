@@ -10,7 +10,8 @@ const userRepository = new UserRepository(prisma);
 const userService = new UserService(userRepository);
 const userController = new UserController(userService);
 
-router.post('/', userController.createUser.bind(userController));
+router.post('/signup', userController.createUser.bind(userController));
+router.post('/signin', userController.createUser.bind(userController));
 router.get('/:id', userController.getUserDetails.bind(userController));
 
 export { router as userRoutes };

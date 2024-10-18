@@ -1,10 +1,11 @@
-import { z } from 'zod';
-import { SplitMethod } from '@prisma/client';
+import { z } from "zod";
+import { SplitMethod } from "@prisma/client";
 
 const CreateUserDTOSchema = z.object({
   email: z.string().email(),
   name: z.string(),
   mobileNumber: z.string(),
+  password: z.string().min(8),
 });
 
 const UserSchema = CreateUserDTOSchema.extend({
@@ -26,16 +27,20 @@ const CreateExpenseDTOSchema = z.object({
 });
 
 // Expense Schema
-const ExpenseSchema = CreateExpenseDTOSchema.omit({ participants: true }).extend({
+const ExpenseSchema = CreateExpenseDTOSchema.omit({
+  participants: true,
+}).extend({
   id: z.string(),
   date: z.date(),
-  participants: z.array(z.object({
-    id: z.string(),
-    expenseId: z.string(),
-    userId: z.string(),
-    amount: z.number().nullable().optional(),
-    percentage: z.number().nullable().optional(),
-  })),
+  participants: z.array(
+    z.object({
+      id: z.string(),
+      expenseId: z.string(),
+      userId: z.string(),
+      amount: z.number().nullable().optional(),
+      percentage: z.number().nullable().optional(),
+    })
+  ),
 });
 
 const ExpenseParticipantSchema = CreateExpenseParticipantDTOSchema.extend({
