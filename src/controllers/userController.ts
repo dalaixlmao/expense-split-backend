@@ -16,7 +16,8 @@ export class UserController {
       if (user) {
         res
           .status(400)
-          .json({ message: "Failed to sign up as user already exist" });
+          .json({ message: "Failed to sign up as user already exists" });
+        return;
       }
       const hashedPassword = await hash(password, 10);
       const newUser = await this.userService.createUser({
@@ -25,7 +26,7 @@ export class UserController {
         password: hashedPassword,
         name,
       });
-      const token = sign({ userId: newUser.id }, process.env.JWT || "");
+      const token = sign({ userId: newUser.id }, process.env.JWT_SECRET || "");
       const bearerToken = "Bearer " + token;
       res
         .status(200)
@@ -33,7 +34,7 @@ export class UserController {
     } catch (error) {
       res
         .status(400)
-        .json({ message: "Failed to sign up as user already exist", error });
+        .json({ message: "Failed to sign up", error });
     }
   }
 
@@ -41,28 +42,42 @@ export class UserController {
     try {
       const { email, password } = req.body;
       const user = await this.userService.findUser(email);
-      console.log("part1 clear", user);
+      
       if (!user) {
-      console.log("part2 clear");
-        res
+        return res
           .status(400)
           .json({ message: "Failed to sign in, user does not exist" });
-      } else if (user) {
-      console.log("part3 clear");
-        const check = await compare(password, user.password);
-        if (!check) {
-      console.log("part4 clear", check);
-          res.status(401).json({ message: "Wrong password" });
-        }
-        const token = sign({ userId: user?.id }, process.env.JWT_PASSWORD || "");;
-        const bearerToken = "Bearer " + token;
-        console.log("part5 clear", bearerToken)
-        res
-          .status(200)
-          .json({ message: "Signed up successfully", token: bearerToken });
       }
+      
+      const check = await compare(password, user.password);
+      if (!check) {
+        res.status(401).json({ message: "Wrong password" });
+        return;
+      }
+      
+      const token = sign({ userId: user.id }, process.env.JWT_SECRET || "");
+      const bearerToken = "Bearer " + token;
+      
+      res
+        .status(200)
+        .json({ message: "Signed in successfully", token: bearerToken });
     } catch (error) {
       res.status(400).json({ message: "Failed to sign in", error });
+    }
+  }
+
+  async getCurrentUser(req: Request, res: Response) {
+    try {
+      if (!req.user) {
+        res.status(401).json({ message: "Not authenticated" });
+        return;
+      }
+      
+      // Return user data without sensitive fields
+      const { password, ...userData } = req.user;
+      res.json(userData);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to get user details", error });
     }
   }
 
@@ -70,7 +85,15 @@ export class UserController {
     try {
       const userId = req.params.id;
       const user = await this.userService.getUserById(userId);
-      res.json(user);
+      
+      if (!user) {
+        res.status(404).json({ message: "User not found" });
+        return;
+      }
+      
+      // Return user data without sensitive fields
+      const { password, ...userData } = user;
+      res.json(userData);
     } catch (error) {
       res.status(404).json({ message: "User not found", error });
     }
