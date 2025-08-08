@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { SplitMethod } from "@prisma/client";
 
-const UserSigninSchema =z.object({
+const UserSigninSchema = z.object({
     email: z.string().email(),
     password: z.string().min(8)
   });
@@ -60,6 +60,22 @@ const PaymentNodeSchema = z.object({
 });
 
 const BalanceSheetSchema = z.object({
+  individualExpenses: z.array(
+    z.object({
+      id: z.string(),
+      description: z.string(),
+      amount: z.number(),
+      date: z.date(),
+      participants: z.array(
+        z.object({
+          userId: z.string(),
+          amount: z.number(),
+        })
+      ),
+    })
+  ),
+  totalOwed: z.number(),
+  totalOwedToOthers: z.number(),
   transactions: z.array(PaymentNodeSchema),
 });
 

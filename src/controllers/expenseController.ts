@@ -34,12 +34,79 @@ export class ExpenseController {
     }
   }
 
+  async getExpenseById(req: Request, res: Response) {
+    try {
+      const expenseId = req.params.id;
+      const expense = await this.expenseService.getExpenseById(expenseId);
+      
+      if (!expense) {
+        res.status(404).json({ message: "Expense not found" });
+        return;
+      }
+      
+      res.json(expense);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to retrieve expense", error });
+    }
+  }
+
+  async updateExpense(req: Request, res: Response) {
+    try {
+      const expenseId = req.params.id;
+      const userId = req.user?.id;
+      const expenseData: CreateExpenseDTO = req.body;
+      
+      // Check if expense exists
+      const existingExpense = await this.expenseService.getExpenseById(expenseId);
+      if (!existingExpense) {
+        res.status(404).json({ message: "Expense not found" });
+        return;
+      }
+      
+      // Check if user is the creator of the expense
+      if (existingExpense.creatorId !== userId) {
+        res.status(403).json({ message: "Not authorized to update this expense" });
+        return;
+      }
+      
+      const updatedExpense = await this.expenseService.updateExpense(expenseId, expenseData);
+      res.json(updatedExpense);
+    } catch (error) {
+      res.status(400).json({ message: "Failed to update expense", error });
+    }
+  }
+
+  async deleteExpense(req: Request, res: Response) {
+    try {
+      const expenseId = req.params.id;
+      const userId = req.user?.id;
+      
+      // Check if expense exists
+      const existingExpense = await this.expenseService.getExpenseById(expenseId);
+      if (!existingExpense) {
+        res.status(404).json({ message: "Expense not found" });
+        return;
+      }
+      
+      // Check if user is the creator of the expense
+      if (existingExpense.creatorId !== userId) {
+        res.status(403).json({ message: "Not authorized to delete this expense" });
+        return;
+      }
+      
+      await this.expenseService.deleteExpense(expenseId);
+      res.json({ message: "Expense deleted successfully" });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to delete expense", error });
+    }
+  }
+
   async downloadBalanceSheet(req: Request, res: Response) {
     try {
       const userId = req.user?.id;
       if (!userId) {
         res.status(401).json({ message: "User not authenticated" });
-      } else if(userId) {
+      } else {
         const balanceSheet = await this.expenseService.generateBalanceSheet(userId);
 
         // Convert balance sheet to CSV

@@ -21,4 +21,9 @@ router.get('/user/:userId', expenseController.getUserExpenses.bind(expenseContro
 router.get('/', expenseController.getAllExpenses.bind(expenseController));
 router.get('/balance-sheet', expenseController.downloadBalanceSheet.bind(expenseController));
 
+// New endpoints
+router.get('/:id', expenseController.getExpenseById.bind(expenseController));
+router.put('/:id', addExpenseValidation, expenseController.updateExpense.bind(expenseController));
+router.delete('/:id', expenseController.deleteExpense.bind(expenseController));
+
 export { router as expenseRoutes };
